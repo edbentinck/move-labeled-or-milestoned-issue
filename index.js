@@ -11,6 +11,7 @@ async function run() {
     const ignoreList = core.getInput("columns-to-ignore");
     const octokit = new github.GitHub(myToken);
     const context = github.context;
+    console.log(context);
 
     if (!milestoneName && !labelName) {
         throw new Error("one of label-name and milestone-name must be set");
