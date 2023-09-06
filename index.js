@@ -82,35 +82,37 @@ async function run() {
 async function moveExistingCard(cardId, fieldId, optionId, projectId, token) {
     var columnName = await tryGetColumnName(fieldId, optionId, token);
     console.log(
-        `A card already exists for the issue. Attempting to move card #${cardId} to column #${columnName}`
+        `A card already exists for the issue. Attempting to move card '${cardId}' to column '${columnName}'`
     );
     const response = await graphql(
-        `mutation ($fieldId: ID!, $itemId: ID!, $optionId: String!, $projectId: ID!) ) {
-            updateProjectV2ItemFieldValue(input: {
-                fieldId: $fieldId
-                projectId: $projectId
-                itemId: $itemId
-                value: {
-                    singleSelectOptionId: $optionId
-                }
-            }) {
-                projectV2Item {
-                    id
-                    content {
-                        ... on Issue {
-                            id
-                            title
-                        }
+        `
+            mutation($fieldId: ID!, $itemId: ID!, $optionId: String!, $projectId: ID!) {
+                updateProjectV2ItemFieldValue(
+                    input: {
+                        fieldId: $fieldId
+                        projectId: $projectId
+                        itemId: $itemId
+                        value: { singleSelectOptionId: $optionId }
                     }
-                    fieldValueByName(name: "Status") {
-                        ... on ProjectV2ItemFieldSingleSelectValue {
-                            id
-                            name
+                ) {
+                    projectV2Item {
+                        id
+                        content {
+                            ... on Issue {
+                                id
+                                title
+                            }
+                        }
+                        fieldValueByName(name: "Status") {
+                            ... on ProjectV2ItemFieldSingleSelectValue {
+                                id
+                                name
+                            }
                         }
                     }
                 }
             }
-        }`,
+        `,
         {
             fieldId: fieldId,
             itemId: cardId,
