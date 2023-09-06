@@ -85,7 +85,7 @@ async function moveExistingCard(cardId, fieldId, optionId, projectId, token) {
         `A card already exists for the issue. Attempting to move card #${cardId} to column #${columnName}`
     );
     const response = await graphql(
-        `mutation ($fieldId: String!, $itemId: String!, $optionId: String!, $projectId: String!) ) {
+        `mutation ($fieldId: ID!, $itemId: ID!, $optionId: String!, $projectId: ID!) ) {
             updateProjectV2ItemFieldValue(input: {
                 fieldId: $fieldId
                 projectId: $projectId
@@ -164,7 +164,7 @@ async function tryGetColumnName(fieldId, optionId, token) {
 async function getCardInformation(nodeId, token) {
     const response = await graphql(
         `
-            query($nodeId: String!) {
+            query($nodeId: ID!) {
                 node(id: $nodeId) {
                     ... on Issue {
                         projectItems(includeArchived: false, first: 100) {
@@ -189,7 +189,7 @@ async function getCardInformation(nodeId, token) {
 async function getColumnInformation(fieldId, token) {
     const response = await graphql(
         `
-            query($fieldId: String!) {
+            query($fieldId: ID!) {
                 node(id: $fieldId) {
                     ... on ProjectV2SingleSelectField {
                         id
