@@ -1,17 +1,20 @@
 name: 'Move labeled or milestoned issue to a specific project column'
 description: 'Move an newly created issue or existing issue that has been labeled or milestoned to a specific column in a project'
 branding:
-  icon: 'move'  
+  icon: 'move'
   color: 'yellow'
 inputs:
   action-token:
     description: 'Token for the repo. The usual secrets.GITHUB_TOKEN will not be sufficient, you must create a token that has repo permissions'
     required: true
-  project-url:
-    description: 'The url of the project'
+  project-id:
+    description: 'The ID of the project (found in the GraphQL API)'
     required: true
-  column-name:
-    description: 'The column that the card should end up'
+  field-id:
+    description: 'The ID of the "Status" field (found in the GraphQL API)'
+    required: true
+  option-id:
+    description: 'The ID of the Option within the "Status" field (found in the GraphQL API) that the card will be moved to'
     required: true
   label-name:
     description: 'The label that specifies if an issue should be automatically moved to the column (mutually exclusive with milestone-name)'
